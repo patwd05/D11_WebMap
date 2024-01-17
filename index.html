@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-search.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-search.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/D11HSBoundaries_2.js"></script>
+        <script src="data/D11Schools_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[38.79413697297888,-104.922922627645],[38.95325569060397,-104.65519996454118]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_MapboxSatellite_0');
+        map.getPane('pane_MapboxSatellite_0').style.zIndex = 400;
+        var layer_MapboxSatellite_0 = L.tileLayer('https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.webp?sku=101S0AiAdllT3&access_token=pk.eyJ1Ijoiam9uY2hlbWxhIiwiYSI6IjdXUzRocmsifQ.acEmRifqE4Bh2Xz-IY_4Bw', {
+            pane: 'pane_MapboxSatellite_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.maxar.com/">Maxar</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_MapboxSatellite_0;
+        map.addLayer(layer_MapboxSatellite_0);
+        map.createPane('pane_Positronretina_1');
+        map.getPane('pane_Positronretina_1').style.zIndex = 401;
+        var layer_Positronretina_1 = L.tileLayer('https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png', {
+            pane: 'pane_Positronretina_1',
+            opacity: 1.0,
+            attribution: '<a href="https://cartodb.com/basemaps/">Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_Positronretina_1;
+        map.addLayer(layer_Positronretina_1);
+        function pop_D11HSBoundaries_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ID'] !== null ? autolinker.link(feature.properties['ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Descr'] !== null ? autolinker.link(feature.properties['Descr'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? autolinker.link(feature.properties['Shape_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_D11HSBoundaries_2_0() {
+            return {
+                pane: 'pane_D11HSBoundaries_2',
+                opacity: 1,
+                color: 'rgba(228,134,26,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_D11HSBoundaries_2');
+        map.getPane('pane_D11HSBoundaries_2').style.zIndex = 402;
+        map.getPane('pane_D11HSBoundaries_2').style['mix-blend-mode'] = 'normal';
+        var layer_D11HSBoundaries_2 = new L.geoJson(json_D11HSBoundaries_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_D11HSBoundaries_2',
+            layerName: 'layer_D11HSBoundaries_2',
+            pane: 'pane_D11HSBoundaries_2',
+            onEachFeature: pop_D11HSBoundaries_2,
+            style: style_D11HSBoundaries_2_0,
+        });
+        bounds_group.addLayer(layer_D11HSBoundaries_2);
+        map.addLayer(layer_D11HSBoundaries_2);
+        function pop_D11Schools_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>School Name</strong><br />' + (feature.properties['CSSD_Schoo'] !== null ? autolinker.link(feature.properties['CSSD_Schoo'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">School Type</th>\
+                        <td>' + (feature.properties['School_Data_map_Program'] !== null ? autolinker.link(feature.properties['School_Data_map_Program'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">EA</th>\
+                        <td>' + (feature.properties['School_Data_map_Weighted overall EA Score'] !== null ? autolinker.link(feature.properties['School_Data_map_Weighted overall EA Score'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Utilization </th>\
+                        <td>' + (feature.properties['School_Data_map_Utilization%'] !== null ? autolinker.link(feature.properties['School_Data_map_Utilization%'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CPTED</th>\
+                        <td>' + (feature.properties['School_Data_map_CPTED%'] !== null ? autolinker.link(feature.properties['School_Data_map_CPTED%'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">SPF</th>\
+                        <td>' + (feature.properties['School_Data_map_SPF'] !== null ? autolinker.link(feature.properties['School_Data_map_SPF'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FCI</th>\
+                        <td>' + (feature.properties['School_Data_map_FCI'] !== null ? autolinker.link(feature.properties['School_Data_map_FCI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Free & Reduced Lunch</th>\
+                        <td>' + (feature.properties['School_Data_map_Free and reduced'] !== null ? autolinker.link(feature.properties['School_Data_map_Free and reduced'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_D11Schools_3_0(feature) {
+            switch(String(feature.properties['q2wHide_230620_C_5'])) {
+                case 'Elementary':
+                    return {
+                pane: 'pane_D11Schools_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(71,215,172,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'High':
+                    return {
+                pane: 'pane_D11Schools_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(85,51,222,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Middle':
+                    return {
+                pane: 'pane_D11Schools_3',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(255,255,255,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(197,221,89,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_D11Schools_3');
+        map.getPane('pane_D11Schools_3').style.zIndex = 403;
+        map.getPane('pane_D11Schools_3').style['mix-blend-mode'] = 'normal';
+        var layer_D11Schools_3 = new L.geoJson(json_D11Schools_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_D11Schools_3',
+            layerName: 'layer_D11Schools_3',
+            pane: 'pane_D11Schools_3',
+            onEachFeature: pop_D11Schools_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_D11Schools_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_D11Schools_3);
+        map.addLayer(layer_D11Schools_3);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'D11 Schools<br /><table><tr><td style="text-align: center;"><img src="legend/D11Schools_3_Elementary0.png" /></td><td>Elementary</td></tr><tr><td style="text-align: center;"><img src="legend/D11Schools_3_High1.png" /></td><td>High</td></tr><tr><td style="text-align: center;"><img src="legend/D11Schools_3_Middle2.png" /></td><td>Middle</td></tr></table>': layer_D11Schools_3,'<img src="legend/D11HSBoundaries_2.png" /> D11 HS Boundaries': layer_D11HSBoundaries_2,"Positron (retina)": layer_Positronretina_1,"Mapbox Satellite": layer_MapboxSatellite_0,}).addTo(map);
+        setBounds();
+        map.addControl(new L.Control.Search({
+            layer: layer_D11Schools_3,
+            initial: false,
+            hideMarkerOnCollapse: true,
+            propertyName: 'CSSD_Schoo'}));
+        document.getElementsByClassName('search-button')[0].className +=
+         ' fa fa-binoculars';
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"School_Data_map_Program": "str","School_Data_map_Weighted overall EA Score": "str","School_Data_map_FCI": "str","School_Data_map_Utilization%": "str","School_Data_map_Free and reduced": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_School_Data_map_Program = document.createElement('div');
+            div_School_Data_map_Program.id = "div_School_Data_map_Program";
+            div_School_Data_map_Program.className= "filterselect";
+            document.getElementById("menu").appendChild(div_School_Data_map_Program);
+            sel_School_Data_map_Program = document.createElement('select');
+            sel_School_Data_map_Program.multiple = true;
+            sel_School_Data_map_Program.size = 3;
+            sel_School_Data_map_Program.id = "sel_School_Data_map_Program";
+            var School_Data_map_Program_options_str = "<option value='' unselected></option>";
+            sel_School_Data_map_Program.onchange = function(){filterFunc()};
+            School_Data_map_Program_options_str  += '<option value="Elementary">Elementary</option>';
+            School_Data_map_Program_options_str  += '<option value="High">High</option>';
+            School_Data_map_Program_options_str  += '<option value="Middle">Middle</option>';
+            sel_School_Data_map_Program.innerHTML = School_Data_map_Program_options_str;
+            div_School_Data_map_Program.appendChild(sel_School_Data_map_Program);
+            var lab_School_Data_map_Program = document.createElement('div');
+            lab_School_Data_map_Program.innerHTML = 'School_Data_map_Program';
+            lab_School_Data_map_Program.className = 'filterlabel';
+            div_School_Data_map_Program.appendChild(lab_School_Data_map_Program);
+            var reset_School_Data_map_Program = document.createElement('div');
+            reset_School_Data_map_Program.innerHTML = 'clear filter';
+            reset_School_Data_map_Program.className = 'filterlabel';
+            reset_School_Data_map_Program.onclick = function() {
+                var options = document.getElementById("sel_School_Data_map_Program").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_School_Data_map_Program.appendChild(reset_School_Data_map_Program);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_School_Data_map_WeightedoverallEAScore = document.createElement('div');
+            div_School_Data_map_WeightedoverallEAScore.id = "div_School_Data_map_WeightedoverallEAScore";
+            div_School_Data_map_WeightedoverallEAScore.className= "filterselect";
+            document.getElementById("menu").appendChild(div_School_Data_map_WeightedoverallEAScore);
+            sel_School_Data_map_WeightedoverallEAScore = document.createElement('select');
+            sel_School_Data_map_WeightedoverallEAScore.multiple = true;
+            sel_School_Data_map_WeightedoverallEAScore.size = 10;
+            sel_School_Data_map_WeightedoverallEAScore.id = "sel_School_Data_map_WeightedoverallEAScore";
+            var School_Data_map_WeightedoverallEAScore_options_str = "<option value='' unselected></option>";
+            sel_School_Data_map_WeightedoverallEAScore.onchange = function(){filterFunc()};
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.3">0.3</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.33">0.33</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.38">0.38</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.39">0.39</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.4">0.4</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.41">0.41</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.42">0.42</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.43">0.43</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.44">0.44</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.45">0.45</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.46">0.46</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.47">0.47</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.48">0.48</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.51">0.51</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.53">0.53</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.54">0.54</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.55">0.55</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.56">0.56</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.57">0.57</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.58">0.58</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.59">0.59</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.6">0.6</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.61">0.61</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.62">0.62</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.65">0.65</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.66">0.66</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.69">0.69</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.7">0.7</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.71">0.71</option>';
+            School_Data_map_WeightedoverallEAScore_options_str  += '<option value="0.72">0.72</option>';
+            sel_School_Data_map_WeightedoverallEAScore.innerHTML = School_Data_map_WeightedoverallEAScore_options_str;
+            div_School_Data_map_WeightedoverallEAScore.appendChild(sel_School_Data_map_WeightedoverallEAScore);
+            var lab_School_Data_map_WeightedoverallEAScore = document.createElement('div');
+            lab_School_Data_map_WeightedoverallEAScore.innerHTML = 'School_Data_map_Weighted overall EA Score';
+            lab_School_Data_map_WeightedoverallEAScore.className = 'filterlabel';
+            div_School_Data_map_WeightedoverallEAScore.appendChild(lab_School_Data_map_WeightedoverallEAScore);
+            var reset_School_Data_map_WeightedoverallEAScore = document.createElement('div');
+            reset_School_Data_map_WeightedoverallEAScore.innerHTML = 'clear filter';
+            reset_School_Data_map_WeightedoverallEAScore.className = 'filterlabel';
+            reset_School_Data_map_WeightedoverallEAScore.onclick = function() {
+                var options = document.getElementById("sel_School_Data_map_WeightedoverallEAScore").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_School_Data_map_WeightedoverallEAScore.appendChild(reset_School_Data_map_WeightedoverallEAScore);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_School_Data_map_FCI = document.createElement('div');
+            div_School_Data_map_FCI.id = "div_School_Data_map_FCI";
+            div_School_Data_map_FCI.className= "filterselect";
+            document.getElementById("menu").appendChild(div_School_Data_map_FCI);
+            sel_School_Data_map_FCI = document.createElement('select');
+            sel_School_Data_map_FCI.multiple = true;
+            sel_School_Data_map_FCI.size = 10;
+            sel_School_Data_map_FCI.id = "sel_School_Data_map_FCI";
+            var School_Data_map_FCI_options_str = "<option value='' unselected></option>";
+            sel_School_Data_map_FCI.onchange = function(){filterFunc()};
+            School_Data_map_FCI_options_str  += '<option value="0.0352">0.0352</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.1036">0.1036</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.1502">0.1502</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.1733">0.1733</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.181">0.181</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.1851">0.1851</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.1985">0.1985</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2031">0.2031</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2173">0.2173</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2181">0.2181</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2186">0.2186</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2213">0.2213</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2326">0.2326</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2333">0.2333</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2361">0.2361</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2379">0.2379</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2548">0.2548</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2619">0.2619</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2656">0.2656</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.2677">0.2677</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3066">0.3066</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.307">0.307</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3172">0.3172</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3429">0.3429</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3467">0.3467</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3538">0.3538</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3689">0.3689</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3818">0.3818</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3836">0.3836</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3878">0.3878</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3896">0.3896</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.3939">0.3939</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.4056">0.4056</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.4518">0.4518</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.4887">0.4887</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.5875">0.5875</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.5902">0.5902</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.6167">0.6167</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.6537">0.6537</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.6796">0.6796</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.6825">0.6825</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.7013">0.7013</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.7359">0.7359</option>';
+            School_Data_map_FCI_options_str  += '<option value="0.8589">0.8589</option>';
+            sel_School_Data_map_FCI.innerHTML = School_Data_map_FCI_options_str;
+            div_School_Data_map_FCI.appendChild(sel_School_Data_map_FCI);
+            var lab_School_Data_map_FCI = document.createElement('div');
+            lab_School_Data_map_FCI.innerHTML = 'School_Data_map_FCI';
+            lab_School_Data_map_FCI.className = 'filterlabel';
+            div_School_Data_map_FCI.appendChild(lab_School_Data_map_FCI);
+            var reset_School_Data_map_FCI = document.createElement('div');
+            reset_School_Data_map_FCI.innerHTML = 'clear filter';
+            reset_School_Data_map_FCI.className = 'filterlabel';
+            reset_School_Data_map_FCI.onclick = function() {
+                var options = document.getElementById("sel_School_Data_map_FCI").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_School_Data_map_FCI.appendChild(reset_School_Data_map_FCI);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_School_Data_map_Utilization = document.createElement('div');
+            div_School_Data_map_Utilization.id = "div_School_Data_map_Utilization";
+            div_School_Data_map_Utilization.className= "filterselect";
+            document.getElementById("menu").appendChild(div_School_Data_map_Utilization);
+            sel_School_Data_map_Utilization = document.createElement('select');
+            sel_School_Data_map_Utilization.multiple = true;
+            sel_School_Data_map_Utilization.size = 10;
+            sel_School_Data_map_Utilization.id = "sel_School_Data_map_Utilization";
+            var School_Data_map_Utilization_options_str = "<option value='' unselected></option>";
+            sel_School_Data_map_Utilization.onchange = function(){filterFunc()};
+            School_Data_map_Utilization_options_str  += '<option value="0">0</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.3217">0.3217</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.3893">0.3893</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.493">0.493</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5225">0.5225</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5289">0.5289</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5534">0.5534</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.564">0.564</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5801">0.5801</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5839">0.5839</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.5916">0.5916</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6044">0.6044</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6145">0.6145</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6248">0.6248</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6282">0.6282</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6327">0.6327</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.645">0.645</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.646">0.646</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6509">0.6509</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6514">0.6514</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6567">0.6567</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6578">0.6578</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.6762">0.6762</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.684">0.684</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7074">0.7074</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7138">0.7138</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7273">0.7273</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7295">0.7295</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.734">0.734</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7775">0.7775</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7885">0.7885</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7893">0.7893</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7901">0.7901</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.7921">0.7921</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.8027">0.8027</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.8154">0.8154</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.84">0.84</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.8467">0.8467</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.8687">0.8687</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.87">0.87</option>';
+            School_Data_map_Utilization_options_str  += '<option value="0.8819">0.8819</option>';
+            sel_School_Data_map_Utilization.innerHTML = School_Data_map_Utilization_options_str;
+            div_School_Data_map_Utilization.appendChild(sel_School_Data_map_Utilization);
+            var lab_School_Data_map_Utilization = document.createElement('div');
+            lab_School_Data_map_Utilization.innerHTML = 'School_Data_map_Utilization%';
+            lab_School_Data_map_Utilization.className = 'filterlabel';
+            div_School_Data_map_Utilization.appendChild(lab_School_Data_map_Utilization);
+            var reset_School_Data_map_Utilization = document.createElement('div');
+            reset_School_Data_map_Utilization.innerHTML = 'clear filter';
+            reset_School_Data_map_Utilization.className = 'filterlabel';
+            reset_School_Data_map_Utilization.onclick = function() {
+                var options = document.getElementById("sel_School_Data_map_Utilization").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_School_Data_map_Utilization.appendChild(reset_School_Data_map_Utilization);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_School_Data_map_Freeandreduced = document.createElement('div');
+            div_School_Data_map_Freeandreduced.id = "div_School_Data_map_Freeandreduced";
+            div_School_Data_map_Freeandreduced.className= "filterselect";
+            document.getElementById("menu").appendChild(div_School_Data_map_Freeandreduced);
+            sel_School_Data_map_Freeandreduced = document.createElement('select');
+            sel_School_Data_map_Freeandreduced.multiple = true;
+            sel_School_Data_map_Freeandreduced.size = 10;
+            sel_School_Data_map_Freeandreduced.id = "sel_School_Data_map_Freeandreduced";
+            var School_Data_map_Freeandreduced_options_str = "<option value='' unselected></option>";
+            sel_School_Data_map_Freeandreduced.onchange = function(){filterFunc()};
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.21">0.21</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.224">0.224</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.271">0.271</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.343">0.343</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.354">0.354</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.369">0.369</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.391">0.391</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.406">0.406</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.422">0.422</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.443">0.443</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.451">0.451</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.465">0.465</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.474">0.474</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.539">0.539</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.552">0.552</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.558">0.558</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.577">0.577</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.593">0.593</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.594">0.594</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.597">0.597</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.619">0.619</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.632">0.632</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.634">0.634</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.636">0.636</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.645">0.645</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.674">0.674</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.681">0.681</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.683">0.683</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.686">0.686</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.719">0.719</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.726">0.726</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.743">0.743</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.783">0.783</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.789">0.789</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.795">0.795</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.809">0.809</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.821">0.821</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.83">0.83</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.838">0.838</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.849">0.849</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.85">0.85</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.851">0.851</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.864">0.864</option>';
+            School_Data_map_Freeandreduced_options_str  += '<option value="0.88">0.88</option>';
+            sel_School_Data_map_Freeandreduced.innerHTML = School_Data_map_Freeandreduced_options_str;
+            div_School_Data_map_Freeandreduced.appendChild(sel_School_Data_map_Freeandreduced);
+            var lab_School_Data_map_Freeandreduced = document.createElement('div');
+            lab_School_Data_map_Freeandreduced.innerHTML = 'School_Data_map_Free and reduced';
+            lab_School_Data_map_Freeandreduced.className = 'filterlabel';
+            div_School_Data_map_Freeandreduced.appendChild(lab_School_Data_map_Freeandreduced);
+            var reset_School_Data_map_Freeandreduced = document.createElement('div');
+            reset_School_Data_map_Freeandreduced.innerHTML = 'clear filter';
+            reset_School_Data_map_Freeandreduced.className = 'filterlabel';
+            reset_School_Data_map_Freeandreduced.onclick = function() {
+                var options = document.getElementById("sel_School_Data_map_Freeandreduced").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_School_Data_map_Freeandreduced.appendChild(reset_School_Data_map_Freeandreduced);
+        </script>
+    </body>
+</html>
